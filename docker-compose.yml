@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  selenium-relatorios:
+    image: selenium/standalone-chrome:latest
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      - network-relatorios
+
+  redis:
+    image: redis:alpine
+    networks:
+      - network-relatorios
+
+  flower:
+    image: mher/flower
+    ports:
+      - "5556:5555"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    networks:
+      - network-relatorios
+
+  app-relatorios:
+    build: .
+    image: app-relatorios-image  # Nome da imagem gerada
+    depends_on:
+      - redis
+    networks:
+      - network-relatorios
+
+  worker:
+    image: app-relatorios-image  # Usa a mesma imagem que o app-relatorios
+    command: celery -A src.infra.celeryapp.app worker --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    networks:
+      - network-relatorios
+
+networks:
+  network-relatorios:
+    driver: bridge
