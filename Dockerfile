@@ -6,12 +6,12 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 COPY requirements.txt /app
-COPY teste.py /app
-COPY .envtest /app
+COPY main.py /app
+COPY .env /app
 COPY client.json /app
 
 COPY /src /app/src
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "teste.py"]
+CMD ["python", "main.py"]

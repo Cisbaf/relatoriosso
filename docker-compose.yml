@@ -36,6 +36,7 @@ services:
     command: celery -A src.infra.celeryapp.app worker --loglevel=info
     depends_on:
       - redis
+      - app-relatorios
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
     networks:
