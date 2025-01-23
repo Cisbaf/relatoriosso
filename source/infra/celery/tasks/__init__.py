@@ -1,0 +1,2 @@
+from source.infra.celery.tasks.tempo_resposta_tasks import task_tempo_resposta
+from source.infra.celery.tasks.analitico_tasks import task_relatorio_analitico

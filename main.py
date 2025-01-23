@@ -2,33 +2,25 @@ import schedule
 import time
 from dotenv import load_dotenv
 import os
-from src.repository.bigquery import BigQueryRepository
-from datetime import date, timedelta
-from src.infra.celeryapp.app import task_sso
+from source.infra.celery.tasks.analitico_tasks import TaskAnalitico
 
 load_dotenv(override=True)
 
-def update_relatorios():
-    url = os.getenv("URL")
-    project_id = os.getenv("PROJECTID")
-    table_id = os.getenv("TABLEID")
-    big_query = BigQueryRepository(project_id=project_id, table_id=table_id)
-    date_atual = date.today()
-    last_update = big_query.get_last_insert()
-    diference = (date_atual - last_update).days
-    if diference < 4:
-        return
-    start_date = last_update + timedelta(days=1)
-    end_date = last_update + timedelta(days=2)
-    task_sso.delay(
-        start_date.strftime("%d/%m/%Y"),
-        end_date.strftime("%d/%m/%Y"),
-        url,
-        project_id,
-        table_id
-    )
+url = os.getenv("URL")
+project_id = os.getenv("PROJECTID")
+table_id = os.getenv("TABLEID")
+user = os.getenv("USER")
+password = os.getenv("PASSWORD")
 
-schedule.every(1).days.at("08:00").do(update_relatorios)
+analitico = TaskAnalitico(
+    intervals_day=1,
+    hour="08:00",
+    url_download=url,
+    project_id=project_id,
+    table_id=table_id,
+    user=user,
+    password=password
+)
 
 while True:
     schedule.run_pending()

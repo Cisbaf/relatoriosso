@@ -28,12 +28,13 @@ services:
     image: app-relatorios-image  # Nome da imagem gerada
     depends_on:
       - redis
+      - selenium-relatorios
     networks:
       - network-relatorios
 
   worker:
     image: app-relatorios-image  # Usa a mesma imagem que o app-relatorios
-    command: celery -A src.infra.celeryapp.app worker --loglevel=info
+    command: celery -A source.infra.celery.app worker --loglevel=info
     depends_on:
       - redis
       - app-relatorios

@@ -10,7 +10,8 @@ COPY main.py /app
 COPY .env /app
 COPY client.json /app
 
-COPY /src /app/src
+COPY /source /app/source
+COPY /exe /app/exe
 
 RUN pip install -r requirements.txt
 
