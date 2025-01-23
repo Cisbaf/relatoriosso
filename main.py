@@ -12,7 +12,7 @@ table_id = os.getenv("TABLEID")
 user = os.getenv("USER")
 password = os.getenv("PASSWORD")
 
-analitico = TaskAnalitico(
+TaskAnalitico(
     intervals_day=1,
     hour="08:00",
     url_download=url,

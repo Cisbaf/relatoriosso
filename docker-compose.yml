@@ -43,6 +43,7 @@ services:
     networks:
       - network-relatorios
 
+
 networks:
   network-relatorios:
     driver: bridge
