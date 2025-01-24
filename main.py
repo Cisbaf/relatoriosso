@@ -1,7 +1,5 @@
-import schedule
-import time
+import schedule, time, os
 from dotenv import load_dotenv
-import os
 from source.infra.celery.tasks.analitico_tasks import TaskAnalitico
 
 load_dotenv(override=True)

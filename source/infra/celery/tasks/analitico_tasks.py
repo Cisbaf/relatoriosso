@@ -16,7 +16,7 @@ def task_relatorio_analitico(self, data: DataTask):
     data = DataTask(**data)
     
     coockie = SSOController(data.user, data.password).get_coockie()
-
+    print(data.date_in)
     request = Request(
         url=data.url_download,
         coockie=coockie,
@@ -65,14 +65,14 @@ class TaskAnalitico(Task):
         diference = (date_atual - last_update).days
         if diference < 4:
             return
-        data_in = last_update + timedelta(days=1)
-        data_fim = last_update + timedelta(days=2)
+        data_in: date = last_update + timedelta(days=1)
+        data_fim: date = last_update + timedelta(days=2)
         self.task.delay({
             "user": self.user,
             "password": self.password,
             "url_download": self.url_download,
             "project_id": self.project_id,
             "table_id": self.table_id,
-            "date_in": data_in,
-            "date_fim": data_fim
+            "date_in": data_in.strftime("%d/%m/%Y"),
+            "date_fim": data_fim.strftime("%d/%m/%Y"),
         })

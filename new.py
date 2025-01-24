@@ -14,20 +14,7 @@ table_id = os.getenv("TABLEID")
 user = os.getenv("USER")
 password = os.getenv("PASSWORD")
 
-class MockTask(TaskAnalitico):
-
-    def execute(self):
-        self.task.delay({
-            "user": self.user,
-            "password": self.password,
-            "url_download": self.url_download,
-            "project_id": self.project_id,
-            "table_id": self.table_id,
-            "date_in": "05/01/2025",
-            "date_fim": "20/01/2025"
-        })
-
-analitico = MockTask(
+analitico = TaskAnalitico(
     intervals_day=None,
     hour=None,
     url_download=url,
