@@ -16,7 +16,7 @@ def task_relatorio_analitico(self, data: DataTask):
     data = DataTask(**data)
     
     coockie = SSOController(data.user, data.password).get_coockie()
-    print(data.date_in)
+
     request = Request(
         url=data.url_download,
         coockie=coockie,

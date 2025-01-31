@@ -1,9 +1,12 @@
-import schedule
 import time
 from dotenv import load_dotenv
 import os
-from source.infra.celery.tasks.analitico_tasks import TaskAnalitico
+from source.infra.sso.controller import SSOController
+from source.domain.request import Request
+from source.domain.date import Date
+from source.infra.relatorios.tempo_resposta import processing, critico
 
+from source.infra.bigquery.big import BigQueryRepository
 
 time.sleep(30)
 load_dotenv(override=True)
@@ -14,17 +17,19 @@ table_id = os.getenv("TABLEID")
 user = os.getenv("USER")
 password = os.getenv("PASSWORD")
 
-analitico = TaskAnalitico(
-    intervals_day=None,
-    hour=None,
-    url_download=url,
-    project_id=project_id,
-    table_id=table_id,
-    user=user,
-    password=password
+coockie = SSOController("Daniel.Fernandes", "42658265", "http://localhost:4444/wd/hub").get_coockie()
+
+request = Request(
+    url="https://cisbaf.ssosamu.com:3001/SSONovaIguacu/_Relatorio/frmConsultaRelatorioNovo.aspx",
+    coockie=coockie,
+    date_in=Date.split("01/01/2024"),
+    date_fim=Date.split("30/12/2024")
 )
 
-analitico.execute()
+analise = processing.TempoRespostaProcessing(relatorios=[
+    critico.RelatorioCritico(name="Critico", request=request),
+])
 
-while True:
-    time.sleep(60)
+relatorio = analise.relatorios[0]
+
+print(len(relatorio.df))
