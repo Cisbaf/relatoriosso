@@ -19,14 +19,16 @@ table_id = os.getenv("TABLEID")
 user = os.getenv("USER")
 password = os.getenv("PASSWORD")
 
+time.sleep(10)
+
 print("pegando coockie 1/4")
 coockie = SSOController(user, password, "http://localhost:4444/wd/hub").get_coockie()
 
 request = Request(
     url="https://cisbaf.ssosamu.com:3001/SSONovaIguacu/_Relatorio/frmConsultaRelatorioNovo.aspx",
     coockie=coockie,
-    date_in=Date.split("06/02/2025"),
-    date_fim=Date.split("08/02/2025")
+    date_in=Date.split("11/04/2025"),
+    date_fim=Date.split("12/04/2025")
 )
 
 print("baixando e tratando dados 2/4 ")
