@@ -2,8 +2,6 @@ version: '3.8'
 services:
   selenium-relatorios:
     image: selenium/standalone-chrome:latest
-    ports:
-      - 4444:4444
     volumes:
       - /dev/shm:/dev/shm
     networks:
