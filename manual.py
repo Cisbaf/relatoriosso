@@ -27,8 +27,8 @@ coockie = SSOController(user, password, "http://localhost:4444/wd/hub").get_cooc
 request = Request(
     url="https://cisbaf.ssosamu.com:3001/SSONovaIguacu/_Relatorio/frmConsultaRelatorioNovo.aspx",
     coockie=coockie,
-    date_in=Date.split("11/04/2025"),
-    date_fim=Date.split("12/04/2025")
+    date_in=Date.split("02/06/2025"),
+    date_fim=Date.split("03/06/2025")
 )
 
 print("baixando e tratando dados 2/4 ")
