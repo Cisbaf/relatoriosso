@@ -16,7 +16,7 @@ class Relatorio(ABC):
     def __make__(self):
         response = self.request.get(self.payload(self.request.date_in, self.request.date_fim))
         if not response.ok:
-            raise Exception("Não foi possivel")
+            raise Exception("Não foi possivel", str(response))
         self.df = self.adjusts(pd.read_html(io.StringIO(response.text))[0])
         print(f"{self.name} construído")
 

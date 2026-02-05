@@ -12,7 +12,8 @@ from source.domain.coockie import Coockie
 
 class SSOController:
 
-    def __init__(self, user: str, password: str, selenium_url='http://selenium-relatorios:4444/wd/hub'):
+    def __init__(self, user: str, password: str, url_base: str, selenium_url='http://selenium-relatorios:4444/wd/hub'):
+        self.url_base = url_base
         self.driver = webdriver.Remote(
             command_executor=selenium_url,
             options=Options()
@@ -39,7 +40,7 @@ class SSOController:
     def __login__(self, username, password):
         try:
             # Navega até a página de login
-            self.driver.get("https://cisbaf.ssosamu.com:3001/SSONovaIguacu/Login.aspx")
+            self.driver.get(f"{self.url_base}/Login.aspx")
             
             # Localiza os campos de login e senha
             input_login = self._get_element_("Input User", '//*[@id="txtLogin"]', By.XPATH, 5)

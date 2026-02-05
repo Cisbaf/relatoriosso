@@ -15,10 +15,10 @@ from datetime import date, timedelta
 def task_relatorio_analitico(self, data: DataTask):
     data = DataTask(**data)
     
-    coockie = SSOController(data.user, data.password).get_coockie()
+    coockie = SSOController(data.user, data.password, data.url_base).get_coockie()
 
     request = Request(
-        url=data.url_download,
+        url=f"{data.url_base}/_Relatorio/frmConsultaRelatorioNovo.aspx",
         coockie=coockie,
         date_in=Date.split(data.date_in),
         date_fim=Date.split(data.date_fim)
@@ -49,9 +49,9 @@ def task_relatorio_analitico(self, data: DataTask):
 
 class TaskAnalitico(Task):
 
-    def __init__(self, intervals_day: int, hour: str, url_download: str, project_id: str, table_id: str, user: str, password: str):
+    def __init__(self, intervals_day: int, hour: str, url_base: str, project_id: str, table_id: str, user: str, password: str):
         super().__init__(intervals_day, hour)
-        self.url_download = url_download
+        self.url_base = url_base
         self.project_id = project_id
         self.table_id = table_id
         self.user = user
@@ -70,7 +70,7 @@ class TaskAnalitico(Task):
         self.task.delay({
             "user": self.user,
             "password": self.password,
-            "url_download": self.url_download,
+            "url_base": self.url_base,
             "project_id": self.project_id,
             "table_id": self.table_id,
             "date_in": data_in.strftime("%d/%m/%Y"),

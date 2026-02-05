@@ -1,4 +1,3 @@
-import time
 from dotenv import load_dotenv
 import os
 from source.infra.sso.controller import SSOController
@@ -19,16 +18,14 @@ table_id = os.getenv("TABLEID")
 user = os.getenv("USER")
 password = os.getenv("PASSWORD")
 
-time.sleep(10)
-
 print("pegando coockie 1/4")
-coockie = SSOController(user, password, "http://localhost:4444/wd/hub").get_coockie()
+coockie = SSOController(user, password, url, "http://localhost:4444/wd/hub").get_coockie()
 
 request = Request(
-    url="https://cisbaf.ssosamu.com:3001/SSONovaIguacu/_Relatorio/frmConsultaRelatorioNovo.aspx",
+    url=f"{url}/_Relatorio/frmConsultaRelatorioNovo.aspx",
     coockie=coockie,
-    date_in=Date.split("02/06/2025"),
-    date_fim=Date.split("03/06/2025")
+    date_in=Date.split("26/01/2026"),
+    date_fim=Date.split("02/02/2026")
 )
 
 print("baixando e tratando dados 2/4 ")
