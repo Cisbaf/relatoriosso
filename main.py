@@ -13,7 +13,7 @@ password = os.getenv("PASSWORD")
 TaskAnalitico(
     intervals_day=1,
     hour="08:00",
-    url_download=url,
+    url_base=url,
     project_id=project_id,
     table_id=table_id,
     user=user,
