@@ -55,7 +55,7 @@ class AnaliticoProcessing(DataProcessing):
                                 self.df_principal.at[i, col] = "#N/A"
                 except Exception as e:
                     errors.append(f"Error processing dataframe {df_name} at index {i}: {e}")
-
+        
         column_order = [
             'TIPO VTR', 'TIPO HD CHAMADO', 'TIPO CHAMADO', 'SEXO DO PACIENTE',	'PRIORIDADE (CHAMADO)',	'ÓBITO', 'IDADE',
             'IDADE DO PACIENTE', 'CÓDIGO DO CHAMADO', 'CIDADE', 'AÇÃO SEM INTERVENÇÃO', 'TOTAL', 'APH_CRITICO',
@@ -65,6 +65,7 @@ class AnaliticoProcessing(DataProcessing):
         ]
         self.df_principal = self.order_columns(self.df_principal, column_order)
         self.df_principal = self.df_principal.iloc[:-1]
+        print("Finalizando processamento")
         return self.df_principal
     
     def treat_for_bigquery(self, df: pd.DataFrame):

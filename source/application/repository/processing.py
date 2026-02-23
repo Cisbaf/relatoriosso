@@ -10,10 +10,10 @@ class DataProcessing(ABC):
         self.dfs = {}
         self.relatorios = relatorios
         for relatorio in relatorios:
-                if relatorio.principal:
-                    self.df_principal = relatorio.df
-                else:
-                    self.dfs[relatorio.name] = relatorio.df
+            if relatorio.principal:
+                self.df_principal = relatorio.df
+            else:
+                self.dfs[relatorio.name] = relatorio.df
 
     @abstractmethod
     def processing(self) -> pd.DataFrame:
