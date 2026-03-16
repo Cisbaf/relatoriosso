@@ -17,8 +17,9 @@ class Relatorio(ABC):
         response = self.request.get(self.payload(self.request.date_in, self.request.date_fim))
         if not response.ok:
             raise Exception("Não foi possivel", str(response))
-        self.df = self.adjusts(pd.read_html(io.StringIO(response.text))[0])
-        print(f"{self.name} construído")
+        if not 'Nenhum registro encontrato' in response.text:
+            self.df = self.adjusts(pd.read_html(io.StringIO(response.text))[0])
+
 
     @abstractmethod
     def adjusts(self, df: pd.DataFrame) -> pd.DataFrame:

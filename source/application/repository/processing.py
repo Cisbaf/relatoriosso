@@ -10,6 +10,8 @@ class DataProcessing(ABC):
         self.dfs = {}
         self.relatorios = relatorios
         for relatorio in relatorios:
+            if relatorio.df is None:
+                continue  # ignora esse relatório
             if relatorio.principal:
                 self.df_principal = relatorio.df
             else:
