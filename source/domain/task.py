@@ -8,5 +8,6 @@ class DataTask:
     url_base: str
     project_id: str
     table_id: str
+    table_update_id: str
     date_in: str
     date_fim: str

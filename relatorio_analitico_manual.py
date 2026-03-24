@@ -14,9 +14,14 @@ load_dotenv(override=True)
 
 url = os.getenv("URL")
 project_id = os.getenv("PROJECTID")
-table_id = os.getenv("TABLEID")
+database_id = os.getenv("DATABASEID")
+# PORTAL SAMU
+portal_samu_table_id = os.getenv("PORTAL_SAMU_TABLEID")
+portal_samu_table_update_id = os.getenv("PORTAL_SAMU_TABLE_UPDATE_ID")
+
 user = os.getenv("USER")
 password = os.getenv("PASSWORD")
+
 
 print("pegando coockie 1/4")
 coockie = SSOController(user, password, url, "http://localhost:4444/wd/hub").get_coockie()
@@ -24,8 +29,8 @@ coockie = SSOController(user, password, url, "http://localhost:4444/wd/hub").get
 request = Request(
     url=f"{url}/_Relatorio/frmConsultaRelatorioNovo.aspx",
     coockie=coockie,
-    date_in=Date.split("26/01/2026"),
-    date_fim=Date.split("02/02/2026")
+    date_in=Date.split("11/03/2026"),
+    date_fim=Date.split("12/03/2026")
 )
 
 print("baixando e tratando dados 2/4 ")
@@ -43,13 +48,14 @@ analise = processing.AnaliticoProcessing(relatorios=[
 
 big = BigQueryRepository(
     project_id=project_id,
-    table_id=table_id
+    table_id=f"{project_id}.{database_id}.{portal_samu_table_id}",
+    table_dt=f"{project_id}.{database_id}.{portal_samu_table_update_id}",
 )
 
 print("tratando dados big query 3/4")
 df, last = analise.treat_for_bigquery(
-        df=analise.reform(df=analise.processing())
-    )
+    df=analise.reform(df=analise.processing())
+)
 
 print("inserindo dados no bigquery 4/4")
 big.insert_data(df, last)

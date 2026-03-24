@@ -38,7 +38,8 @@ def task_relatorio_analitico(self, data: DataTask):
 
     big = BigQueryRepository(
         project_id=data.project_id,
-        table_id=data.table_id
+        table_id=data.table_id,
+        table_dt=data.table_update_id
     )
 
     df, last = analise.treat_for_bigquery(
@@ -49,17 +50,18 @@ def task_relatorio_analitico(self, data: DataTask):
 
 class TaskAnalitico(Task):
 
-    def __init__(self, intervals_day: int, hour: str, url_base: str, project_id: str, table_id: str, user: str, password: str):
+    def __init__(self, intervals_day: int, hour: str, url_base: str, project_id: str, table_id: str, table_update_id: str, user: str, password: str):
         super().__init__(intervals_day, hour)
         self.url_base = url_base
         self.project_id = project_id
         self.table_id = table_id
+        self.table_update_id = table_update_id
         self.user = user
         self.password = password
         self.task = task_relatorio_analitico
 
     def execute(self):
-        big_query = BigQueryRepository(project_id=self.project_id, table_id=self.table_id)
+        big_query = BigQueryRepository(project_id=self.project_id, table_id=self.table_id, table_dt=self.table_update_id)
         date_atual = date.today()
         last_update = big_query.get_last_insert()
         diference = (date_atual - last_update).days
@@ -73,6 +75,7 @@ class TaskAnalitico(Task):
             "url_base": self.url_base,
             "project_id": self.project_id,
             "table_id": self.table_id,
+            "table_update_id": self.table_update_id,
             "date_in": data_in.strftime("%d/%m/%Y"),
             "date_fim": data_fim.strftime("%d/%m/%Y"),
         })
