@@ -3,8 +3,8 @@ import os
 from source.infra.sso.controller import SSOController
 from source.domain.request import Request
 from source.domain.date import Date
-from source.infra.relatorios.tempo_resposta.processing import TempoRespostaProcessing
-from source.infra.relatorios.tempo_resposta.processingmerge import TempoRespostaProcessingMerge
+from source.infra.relatorios.tempo_resposta.processingmergev2 import TempoRespostaProcessingMergeV2
+
 from source.infra.relatorios.tempo_resposta import regulacao, critico, tih, destino, total_chamados
 from source.infra.bigquery.big import BigQueryRepository
 
@@ -20,19 +20,18 @@ tempo_resposta_table_update_id = os.getenv("TEMPO_RESPOSTA_TABLE_UPDATE_ID")
 user = os.getenv("USER")
 password = os.getenv("PASSWORD")
 
-
 print("pegando coockie 1/4")
 coockie = SSOController(user, password, url, "http://localhost:4444/wd/hub").get_coockie()
 
 request = Request(
     url=f"{url}/_Relatorio/frmConsultaRelatorioNovo.aspx",
     coockie=coockie,
-    date_in=Date.split("21/03/2026"),
-    date_fim=Date.split("21/03/2026")
+    date_in=Date.split("01/01/2026"),
+    date_fim=Date.split("06/04/2026")
 )
 
 print("fazendo download 2/4")
-process = TempoRespostaProcessingMerge(
+process = TempoRespostaProcessingMergeV2(
     relatorios_analiticos=[
         regulacao.RelatorioRegulacao("Regulação", request=request),
         critico.RelatorioCritico("Critico", request=request),

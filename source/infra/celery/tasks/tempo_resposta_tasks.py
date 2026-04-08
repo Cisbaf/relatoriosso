@@ -3,7 +3,7 @@ from source.domain.date import Date
 from source.infra.sso.controller import SSOController
 from source.domain.request import Request
 from source.domain.task import DataTask
-from source.infra.relatorios.tempo_resposta import regulacao, critico, tih, total_chamados, destino, processingmerge
+from source.infra.relatorios.tempo_resposta import regulacao, critico, tih, total_chamados, destino, processingmergev2
 from source.infra.bigquery.big import BigQueryRepository
 from source.application.repository.task import Task
 from datetime import date, timedelta
@@ -22,7 +22,7 @@ def task_relatorio_tempo_resposta(self, data: DataTask):
         date_fim=Date.split(data.date_fim)
     )
 
-    process = processingmerge.TempoRespostaProcessingMerge(
+    process = processingmergev2.TempoRespostaProcessingMergeV2(
         relatorios_analiticos=[
             regulacao.RelatorioRegulacao("Regulação", request=request),
             critico.RelatorioCritico("Critico", request=request),
